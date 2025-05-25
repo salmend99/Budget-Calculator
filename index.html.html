@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Salary Budget Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    label, input, button {
+      display: block;
+      margin: 10px auto;
+      text-align: center;
+    }
+
+    .results {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .results p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Salary Budget Calculator</h1>
+  <label for="salaryInput">Enter Your Gross Salary:</label>
+  <input type="number" id="salaryInput" placeholder="e.g. 60000">
+  <button onclick="calculateBudget()">Calculate</button>
+
+  <div class="results" id="output" style="display: none;"></div>
+
+  <script>
+    function calculateBudget() {
+      let grossSalary = parseFloat(document.getElementById("salaryInput").value);
+      let salary = grossSalary * 0.76;
+
+      let rent = salary * 0.32;
+      let food = salary * 0.08;
+      let yourShare = salary * 0.25;
+      let roth = salary * 0.20;
+      let stock = salary * 0.05;
+      let giving = salary * 0.05;
+      let bills = salary * 0.05;
+
+      // Roth cap logic
+      if (roth > 6500) {
+        roth = 6500;
+      }
+
+      let remaining_budget = salary - (rent + food + roth + giving + stock + yourShare + bills);
+      let total = rent + food + roth + giving + stock + yourShare + remaining_budget + bills;
+
+      document.getElementById("output").style.display = "block";
+      document.getElementById("output").innerHTML = `
+        <p><strong>Gross Salary:</strong> $${Math.round(grossSalary)}</p>
+        <p><strong>Yearly Net Take Home:</strong> $${Math.round(salary)}</p>
+        <p><strong>Monthly Rent:</strong> $${Math.round(rent / 12)}</p>
+        <p><strong>Monthly Food:</strong> $${Math.round(food / 12)}</p>
+        <p><strong>Monthly Other Bills:</strong> $${Math.round(bills / 12)}</p>
+        <p><strong>Yearly Roth (Goal $6500):</strong> $${Math.round(roth)}</p>
+        <p><strong>Monthly Giving:</strong> $${Math.round(giving / 12)}</p>
+        <p><strong>Monthly Stocks:</strong> $${Math.round(stock / 12)}</p>
+        <p><strong>Monthly Fun Money:</strong> $${Math.round(yourShare / 12)}</p>
+        <p><strong>Monthly Remaining:</strong> $${Math.round(remaining_budget / 12)}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
